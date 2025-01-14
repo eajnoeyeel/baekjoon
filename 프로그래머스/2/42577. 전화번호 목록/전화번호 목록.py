@@ -4,6 +4,6 @@ def solution(phone_book):
     for idx in range(0, len(phone_book) - 1):
         if phone_book[idx + 1].startswith(phone_book[idx]):
             return False
-        
+
     return True
 
