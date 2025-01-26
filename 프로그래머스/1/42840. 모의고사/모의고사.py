@@ -9,15 +9,11 @@ def solution(answers):
                 score += 1
         scores[i] = score
     
-    scores = sorted(scores.items(), key=lambda x : x[1], reverse=True)
-    
-    acme = scores[0][1]
-    for score in scores:
-        if score[1] == acme:
-            honors.append(score[0] + 1)
-        else:
-            break
+    acme = max(scores.values())
+    for key in scores:
+        if scores[key] == acme:
+            honors.append(key + 1)
+            
     honors.sort()
 
     return honors
-
