@@ -1,5 +1,5 @@
 import math
-from itertools import permutations
+from itertools import *
 
 def is_prime(number):
     if number <= 1:
@@ -15,16 +15,24 @@ def solution(numbers):
 
     digits = []
     for number in numbers:
-        digits.append(number)
-    perms = permutations(digits)
+        digits.append(int(number))
+    
+    combs = []
+    for i in range(len(digits)):
+        combs.extend(combinations(digits, i + 1))
+
+    perms = set()
+    for comb in combs:
+        perms.update(permutations(comb))
 
     results = set()
     for perm in perms:
         result = 0
         for idx in range(len(perm)):
-            results.add(int(perm[idx]))
-            result += int(perm[idx]) * 10 ** idx
+            results.add(perm[idx])
+            result += perm[idx] * 10 ** idx
         results.add(result)
+    print(results)
     
     for result in results:
         if is_prime(result):
