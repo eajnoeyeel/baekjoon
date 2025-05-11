@@ -1,74 +1,62 @@
 from collections import deque
 
-N = int(input())
-board = []
-shark_pos = []
-shark_cnt = 0
-shark_size = 2
-time = 0
+DIRECTIONS = [(-1, 0), (0, -1), (0, 1), (1, 0)]
 
-for r in range(N):
-    row = list(map(int, input().split()))
-    for c in range(N):
-        if row[c] == 9:
-            shark_pos.append(r)
-            shark_pos.append(c)
-            row[c] = 0
-    board.append(row)
+def in_bounds(x: int, y: int, N: int) -> bool:
+    return 0 <= x < N and 0 <= y < N
 
 
-def bfs(x, y, d, graph):
-    global shark_pos, shark_cnt, shark_size, time
-
-    dx = [-1, 1, 0, 0]
-    dy = [0, 0, -1, 1]
-
-    queue = deque([(d, x, y)])
-    visited = set([(x, y)])
-
+def bfs(x, y, size, board):
+    N = len(board)
+    queue = deque([(0, x, y)])
+    visited = [[False] * N for _ in range(N)]
+    visited[x][y] = True
     fishes = []
+
     while queue:
-        d, x, y = queue.popleft()
-        for idx in range(4):
-            nd = d + 1
-            nx = x + dx[idx]
-            ny = y + dy[idx]
+        dist, x, y = queue.popleft()
+        for dx, dy in DIRECTIONS:
+            nx, ny = x + dx, y + dy
+            if not in_bounds(nx, ny, N) or visited[nx][ny] or board[nx][ny] > size:
+                continue
+            visited[nx][ny] = True
+            if 0 < board[nx][ny] < size:
+                fishes.append((dist + 1, nx, ny))
+            queue.append((dist + 1, nx, ny))
+    
+    return min(fishes, key=lambda x: (x[0], x[1], x[2])) if fishes else None
 
-            if nx < 0 or nx >= len(graph) or ny < 0 or ny >= len(graph[0]):
-                continue
-            if graph[nx][ny] > shark_size:
-                continue
-            if (nx, ny) in visited:
-                continue
-            if 0 < graph[nx][ny] < shark_size:
-                fishes.append((nd, nx, ny))
-            
-            visited.add((nx, ny))
-            queue.append((nd, nx, ny))
-    
-    if not fishes:
-        return False
-    fishes.sort()
-    # 아기 상어가 이동할 좌표
-    chosen = fishes[0]
-    # 해당 자리로 아기 상어 이동
-    shark_pos[0], shark_pos[1] = chosen[1], chosen[2]
-    # 해당 자리의 물고기 섭취
-    time += chosen[0]
-    board[chosen[1]][chosen[2]] = 0
-    shark_cnt += 1
-    if shark_cnt == shark_size:
-        shark_size += 1
-        shark_cnt = 0
-    return True
-    
 
-def solution():
-    global time
-    while (1):
-        if not bfs(shark_pos[0], shark_pos[1], 0, board):
-            return time
+def main():
+    N = int(input())
+    board = []
+    for r in range(N):
+        row = list(map(int, input().split()))
+        for c in range(N):
+            if row[c] == 9:
+                shark_x, shark_y = r, c
+                row[c] = 0
+        board.append(row)
     
+    size = 2
+    cnt = 0
+    time = 0
+
+    while True:
+        result = bfs(shark_x, shark_y, size, board)
+        if result is None:
+            break
+        dist, x, y = result
+        time += dist
+        shark_x, shark_y = x, y
+        board[x][y] = 0
+        cnt += 1
+        if cnt == size:
+            size += 1
+            cnt = 0
+
+    print(time)
+
 
 if __name__ == "__main__":
-    print(solution())
+    main()
