@@ -1,0 +1,22 @@
+import sys
+input = sys.stdin.readline
+
+
+def main():
+	N = int(input())
+	scores = list(map(int, input().split()))
+
+	# (점수, 지원자 번호)로 묶기. 1-based index.
+	pairs = [(scores[i], i + 1) for i in range(N)]
+
+	pairs.sort(reverse=True)
+
+	res = []
+	for scores, idx in pairs[:3]:
+		res.append(str(idx))
+
+	print(' '.join(res))
+
+
+if __name__ == "__main__":
+	main()
