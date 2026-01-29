@@ -1,0 +1,22 @@
+import sys
+input = sys.stdin.readline
+
+
+def to_base8(n: int) -> str:
+	if n == 0:
+		return "0"
+	digits = []
+	while n > 0:
+		digits.append(str(n % 8))
+		n //= 8
+	return "".join(reversed(digits))
+
+
+def main():
+	N = int(input())
+	total = sum(list(map(int, input().split())))
+	print(to_base8(total))
+
+
+if __name__ == "__main__":
+	main()
