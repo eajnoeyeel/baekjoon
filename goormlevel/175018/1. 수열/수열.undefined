@@ -1,0 +1,26 @@
+import sys
+input = sys.stdin.readline
+
+
+def main():
+	K = int(input())
+
+	if K == 1:
+		print(0)
+		return
+	elif K == 2:
+		print(1)
+		return
+
+	# a는 n - 2번째 값, b는 n - 1번째 값
+	a, b = 0, 1
+
+	# 3번째부터 K번째까지 계산
+	for _ in range(3, K + 1):
+		a, b = b, a + b
+
+	print(b % 1_000_000_007)
+	
+
+if __name__ == "__main__":
+	main()
