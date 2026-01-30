@@ -1,0 +1,28 @@
+import sys
+input = sys.stdin.readline
+
+
+N, M = map(int, input().split())
+
+# 중복 제거를 위해 집합 사용
+collected_cards = set()
+
+# 몇 번째 카드인지 세는 변수
+count = 0
+
+# 카드를 다 모았는지 확인하는 플래그
+success = False
+
+for _ in range(M):
+	card = int(input())
+	count += 1
+
+	collected_cards.add(card)
+
+	if len(collected_cards) == N:
+		print(count)
+		success = True
+		break
+
+if not success:
+	print(-1)
