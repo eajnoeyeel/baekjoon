@@ -1,0 +1,23 @@
+import sys
+input = sys.stdin.readline
+
+N = int(input())
+events = []
+
+for _ in range(N):
+    s, e = map(int, input().split())
+    events.append((s, e))
+
+# 종료 시각, 시작 시각 기준 정렬
+events.sort(key=lambda x: (x[1], x[0]))
+
+count = 0
+last_end_time = -1
+
+for s, e in events:
+    # 시작 시각이 (종료 시각 + 1)보다 크거나 같은 경우 선택
+    if s >= last_end_time + 1:
+        count += 1
+        last_end_time = e
+
+print(count)
