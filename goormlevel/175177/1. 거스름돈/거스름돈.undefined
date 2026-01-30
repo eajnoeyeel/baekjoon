@@ -1,0 +1,12 @@
+import sys
+input = sys.stdin.readline
+
+N = int(input())
+coins = [40, 20, 10, 5, 1]
+count = 0
+
+for coin in coins:
+	count += N // coin
+	N %= coin
+
+print(count)
