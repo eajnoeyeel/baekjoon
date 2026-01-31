@@ -1,0 +1,52 @@
+import sys
+from collections import deque
+input = sys.stdin.readline
+
+
+def get_representative(n, sizes):
+    # 1. 빈도 배열 만들기 (쥐의 크기 최대 10만)
+    max_size = 100000
+    freq = [0] * (max_size + 1)
+    for s in sizes:
+        freq[s] += 1
+    
+    # 2. 초기 윈도우 설정 (구간 [X - 2, X + 2]의 합)
+    curr_count = sum(freq[1:4])
+    max_count = curr_count
+    min_X = 1
+
+    # 3. 슬라이딩 윈도우 실행
+    for X in range(2, max_size + 1):
+        # 1) 윈도우에서 빠지는 값
+        if X - 3 >= 1:
+            curr_count -= freq[X - 3]
+        # 2) 윈도우에 더해지는 값
+        if X + 2 <= max_size:
+            curr_count += freq[X + 2]
+        
+        # 3) 더 많은 쥐를 포함하는 X를 발견하면 갱신
+        if curr_count > max_count:
+            max_count = curr_count
+            min_X = X
+    
+    return min_X
+
+
+def main():
+    N = int(input())
+    A = list(map(int, input().split()))
+    B = list(map(int, input().split()))
+
+    rep_a = get_representative(N, A)
+    rep_b = get_representative(N, B)
+
+    print(rep_a, rep_b)
+
+    if rep_a > rep_b:
+        print("good")
+    else:
+        print("bad")
+
+
+if __name__ == "__main__":
+    main()
