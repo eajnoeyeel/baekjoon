@@ -1,0 +1,26 @@
+import sys
+input = sys.stdin.readline
+
+
+def main():
+    N = int(input())
+
+    board = []
+    pos_x, pos_y = -1, -1
+    for row in range(N):
+        board.append(list(map(int, input().split())))
+        for col in range(N):
+            if board[row][col] == 0:
+                pos_x, pos_y = row, col
+
+    total = 0
+    for row in range(N):
+        for col in range(N):
+            if row == pos_x or col == pos_y:
+                total += board[row][col]
+    
+    print(total)
+
+
+if __name__ == "__main__":
+    main()
