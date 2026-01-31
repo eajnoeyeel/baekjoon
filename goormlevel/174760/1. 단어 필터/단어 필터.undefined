@@ -1,0 +1,27 @@
+import sys
+input = sys.stdin.readline
+
+
+def main():
+	S_len, E_len = map(int, input().split())
+	S = list(input().strip())
+	E = input().strip()
+	stack = []
+
+	for char in E:
+		stack.append(char)
+
+		if len(stack) >= S_len and stack[-S_len:] == S:
+			for _ in range(S_len):
+				stack.pop()
+
+	result = "".join(stack)
+	if result:
+		print(result)
+	else:
+		print("EMPTY")
+	
+
+
+if __name__ == "__main__":
+	main()
